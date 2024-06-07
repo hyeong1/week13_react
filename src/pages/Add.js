@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Rating from "react-rating";
 import * as styled from "../styles/style";
 
