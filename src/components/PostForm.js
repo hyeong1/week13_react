@@ -5,15 +5,33 @@ import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import * as styled from "../styles/style";
 import { createDate } from "../utils/Format";
-import { updateId, add, update } from "../redux/modules/postSlice";
+import { updateId, add, update, setPrevPage } from "../redux/modules/postSlice";
 
 const PostForm = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const posts = useSelector((state) => state.posts.post);
   const maxId = useSelector((state) => state.posts.id);
   const param = useParams();
-  const detail = posts.find((p) => p.id == param.id);
+  const detail = {
+    id: 0,
+    title: "",
+    content: "",
+    link: "",
+    category: "",
+    score: 0,
+    password: "",
+    write_at: "",
+  };
+  if (props.detail !== undefined) {
+    detail.id = props.detail.id;
+    detail.title = props.detail.title;
+    detail.content = props.detail.content;
+    detail.link = props.detail.link;
+    detail.category = props.detail.category;
+    detail.score = props.detail.score;
+    detail.password = props.detail.password;
+    detail.write_at = props.detail.write_at;
+  }
 
   const titleRef = useRef("");
   const contentRef = useRef("");
@@ -25,10 +43,11 @@ const PostForm = (props) => {
   useEffect(() => {
     if (detail !== undefined) {
       setRating(detail.score);
+      setCategory(detail.category);
     }
   }, []);
 
-  const validData = () => {
+  const validData = (isEdit) => {
     const RegExp =
       /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
@@ -63,24 +82,28 @@ const PostForm = (props) => {
       linkRef.current.focus();
       return false;
     } else if (
-      pwRef.current.value.length === 0 ||
-      pwRef.current.value.trim() === 0
+      !isEdit &&
+      (pwRef.current.value.length === 0 || pwRef.current.value.trim() === 0)
     ) {
       alert("비밀번호를 입력하세요.");
       pwRef.current.focus();
       return false;
     }
     if (
+      !isEdit &&
       window.confirm(
         "카테고리와 비밀번호는 수정할 수 없습니다. 등록하시겠습니까?"
       )
     ) {
       return true;
     }
+    if (isEdit) {
+      return true;
+    }
   };
 
   const handleSubmit = () => {
-    if (!validData()) {
+    if (!validData(false)) {
       return;
     }
 
@@ -100,7 +123,7 @@ const PostForm = (props) => {
   };
 
   const handleEdit = () => {
-    if (!validData()) {
+    if (!validData(true)) {
       return;
     }
     if (window.confirm("수정하시겠습니까?")) {
@@ -115,76 +138,28 @@ const PostForm = (props) => {
         write_at: detail.write_at,
       };
       dispatch(update(post));
+      dispatch(setPrevPage("/"));
       navigate(`/detail/${param.id}`);
     }
   };
 
   return (
     <>
-      {detail !== undefined ? (
-        <styled.Container>
+      <styled.Container>
+        <div>
+          <styled.Title>제목</styled.Title>
           <div>
-            <styled.Title>제목</styled.Title>
-            <div>
-              <styled.Input ref={titleRef} defaultValue={detail.title} />
-            </div>
+            <styled.Input ref={titleRef} defaultValue={detail.title} />
           </div>
+        </div>
+        <div>
+          <styled.Title>카테고리</styled.Title>
           <div>
-            <styled.Title>카테고리</styled.Title>
-            <div>
+            {props.detail !== undefined ? (
               <styled.Tag $category={detail.category}>
                 {detail.category}
               </styled.Tag>
-            </div>
-          </div>
-          <div>
-            <styled.Title>내용</styled.Title>
-            <div>
-              <styled.ContentInput
-                ref={contentRef}
-                defaultValue={detail.content}
-              />
-            </div>
-          </div>
-          <div>
-            <styled.Title>링크</styled.Title>
-            <div>
-              <styled.Input ref={linkRef} defaultValue={detail.link} />
-            </div>
-          </div>
-          <div>
-            <styled.Title>
-              다시 풀고 싶은 정도{" "}
-              <Rating
-                initialRating={rating}
-                onChange={setRating}
-                emptySymbol={<FaRegStar />}
-                fullSymbol={<FaStar />}
-              />
-            </styled.Title>
-          </div>
-          <div>
-            <p>
-              비밀번호 <input type="password" ref={pwRef} disabled />
-            </p>
-          </div>
-          <styled.AlignRight>
-            <styled.StButton onClick={handleEdit}>
-              {props.buttonText}
-            </styled.StButton>
-          </styled.AlignRight>
-        </styled.Container>
-      ) : (
-        <styled.Container>
-          <div>
-            <styled.Title>제목</styled.Title>
-            <div>
-              <styled.Input ref={titleRef} />
-            </div>
-          </div>
-          <div>
-            <styled.Title>카테고리</styled.Title>
-            <div>
+            ) : (
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -193,43 +168,50 @@ const PostForm = (props) => {
                 <option value="programmers">프로그래머스</option>
                 <option value="leetcode">LeetCode</option>
               </select>
-            </div>
+            )}
           </div>
+        </div>
+        <div>
+          <styled.Title>내용</styled.Title>
           <div>
-            <styled.Title>내용</styled.Title>
-            <div>
-              <styled.ContentInput ref={contentRef} />
-            </div>
+            <styled.ContentInput
+              ref={contentRef}
+              defaultValue={detail.content}
+            />
           </div>
+        </div>
+        <div>
+          <styled.Title>링크</styled.Title>
           <div>
-            <styled.Title>링크</styled.Title>
-            <div>
-              <styled.Input ref={linkRef} />
-            </div>
+            <styled.Input ref={linkRef} defaultValue={detail.link} />
           </div>
-          <div>
-            <styled.Title>
-              다시 풀고 싶은 정도{" "}
-              <Rating
-                initialRating={rating}
-                onChange={setRating}
-                emptySymbol={<FaRegStar />}
-                fullSymbol={<FaStar />}
-              />
-            </styled.Title>
-          </div>
-          <div>
+        </div>
+        <div>
+          <styled.Title>
+            다시 풀고 싶은 정도{" "}
+            <Rating
+              initialRating={rating}
+              onChange={setRating}
+              emptySymbol={<FaRegStar />}
+              fullSymbol={<FaStar />}
+            />
+          </styled.Title>
+        </div>
+        <div>
+          {props.buttonText === "등록" && (
             <p>
               비밀번호 <input type="password" ref={pwRef} />
             </p>
-          </div>
-          <styled.AlignRight>
-            <styled.StButton onClick={handleSubmit}>
-              {props.buttonText}
-            </styled.StButton>
-          </styled.AlignRight>
-        </styled.Container>
-      )}
+          )}
+        </div>
+        <styled.AlignRight>
+          <styled.StButton
+            onClick={props.buttonText === "등록" ? handleSubmit : handleEdit}
+          >
+            {props.buttonText}
+          </styled.StButton>
+        </styled.AlignRight>
+      </styled.Container>
     </>
   );
 };
