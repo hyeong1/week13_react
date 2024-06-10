@@ -11,7 +11,7 @@ const Home = () => {
         <styled.TitleCenter>알고리즘 복습하기</styled.TitleCenter>
         <styled.AlignRight>
           <Link to={`add`}>
-            <button>추가</button>
+            <styled.StButton>추가</styled.StButton>
           </Link>
         </styled.AlignRight>
         <List />
