@@ -5,6 +5,7 @@ import { FaRegStar, FaStar } from "react-icons/fa6";
 import * as styled from "../styles/style";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
+import { setPrevPage } from "../redux/modules/postSlice";
 import { remove } from "../redux/modules/postSlice";
 
 const Detail = () => {
@@ -36,6 +37,7 @@ const Detail = () => {
     if (!validUser()) {
       return false;
     }
+    dispatch(setPrevPage(`/detail/${param.id}`));
     navigator(`/edit/${param.id}`);
   };
 
@@ -72,7 +74,9 @@ const Detail = () => {
           />
         </p>
 
-        <styled.Title>{detail.content}</styled.Title>
+        <styled.ContentInput readonly="readonly">
+          {detail.content}
+        </styled.ContentInput>
         <p>
           비밀번호{" "}
           <input
@@ -81,8 +85,8 @@ const Detail = () => {
             onChange={(e) => setUserPw(e.target.value)}
             ref={pwRef}
           />
-          <button onClick={handleEdit}>수정</button>
-          <button onClick={handleDelete}>삭제</button>
+          <styled.StButton onClick={handleEdit}>수정</styled.StButton>
+          <styled.StButton onClick={handleDelete}>삭제</styled.StButton>
         </p>
       </styled.Container>
       <Footer />

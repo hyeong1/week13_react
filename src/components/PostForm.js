@@ -3,9 +3,9 @@ import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import * as styled from "../styles/style";
 import { useDispatch, useSelector } from "react-redux";
-import { updateId, add, update } from "../redux/modules/postSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { createDate } from "../utils/Format";
+import { updateId, add, update, setPrevPage } from "../redux/modules/postSlice";
 
 const PostForm = (props) => {
   console.log(props.data); // Edit에서 보낸 id가 있으면 redux에서 찾기 + 수정할 떄 redux에서도 수정 + 수정 api요청
@@ -15,6 +15,7 @@ const PostForm = (props) => {
   const maxId = useSelector((state) => state.posts.id);
   const param = useParams();
   const detail = posts.find((p) => p.id == param.id);
+  console.log(detail);
 
   const titleRef = useRef("");
   const contentRef = useRef("");
@@ -97,6 +98,7 @@ const PostForm = (props) => {
       };
       console.log(post);
       dispatch(update(post));
+      dispatch(setPrevPage("/"));
       navigate(`/detail/${param.id}`);
     }
   };
@@ -114,32 +116,9 @@ const PostForm = (props) => {
           <div>
             <styled.Title>카테고리</styled.Title>
             <div>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                {detail.category === "baekjoon" ? (
-                  <option value="baekjoon " selected>
-                    백준
-                  </option>
-                ) : (
-                  <option value="baekjoon">백준</option>
-                )}
-                {detail.category === "programmers" ? (
-                  <option value="programmers " selected>
-                    프로그래머스
-                  </option>
-                ) : (
-                  <option value="programmers">프로그래머스</option>
-                )}
-                {detail.category === "leetcode" ? (
-                  <option value="leetcode " selected>
-                    LeetCode
-                  </option>
-                ) : (
-                  <option value="leetcode">LeetCode</option>
-                )}
-              </select>
+              <styled.Tag $category={detail.category}>
+                {detail.category}
+              </styled.Tag>
             </div>
           </div>
           <div>
@@ -174,7 +153,9 @@ const PostForm = (props) => {
             </p>
           </div>
           <styled.AlignRight>
-            <button onClick={handleEdit}>{props.buttonText}</button>
+            <styled.StButton onClick={handleEdit}>
+              {props.buttonText}
+            </styled.StButton>
           </styled.AlignRight>
         </styled.Container>
       ) : (
@@ -227,7 +208,9 @@ const PostForm = (props) => {
             </p>
           </div>
           <styled.AlignRight>
-            <button onClick={handleSubmit}>{props.buttonText}</button>
+            <styled.StButton onClick={handleSubmit}>
+              {props.buttonText}
+            </styled.StButton>
           </styled.AlignRight>
         </styled.Container>
       )}
