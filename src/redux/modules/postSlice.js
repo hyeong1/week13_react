@@ -46,7 +46,6 @@ const postSlice = createSlice({
       state.post = [...state.post, action.payload];
     },
     remove: (state, action) => {
-      console.log(action.payload);
       state.post = state.post.filter((p) => p.id != action.payload);
     },
     update: (state, action) => {
