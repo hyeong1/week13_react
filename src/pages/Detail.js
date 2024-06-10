@@ -69,9 +69,10 @@ const Detail = () => {
             fullSymbol={<FaStar />}
           />
         </styled.Title>
-        <styled.ContentInput readonly="readOnly">
-          {detail.content}
-        </styled.ContentInput>
+        <styled.ContentInput
+          readOnly="readonly"
+          defaultValue={detail.content}
+        />
         <styled.Title>
           비밀번호{" "}
           <input
