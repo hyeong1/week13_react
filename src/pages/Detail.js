@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
-import { remove, setPrevPage } from "../redux/modules/postSlice";
+import { remove } from "../redux/modules/postSlice";
 import * as styled from "../styles/style";
 import Footer from "../components/Footer";
 
@@ -33,7 +33,6 @@ const Detail = () => {
     if (!validUser()) {
       return false;
     }
-    dispatch(setPrevPage(`/detail/${param.id}`));
     navigator(`/edit/${param.id}`);
   };
 

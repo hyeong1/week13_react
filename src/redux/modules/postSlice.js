@@ -5,7 +5,6 @@ const postSlice = createSlice({
   initialState: {
     id: 0,
     post: [],
-    prevPage: "/",
   },
   reducers: {
     updateId: (state, action) => {
@@ -25,11 +24,8 @@ const postSlice = createSlice({
         ...state.post.filter((p) => p.id > action.payload.id),
       ];
     },
-    setPrevPage: (state, action) => {
-      state.prevPage = action.payload;
-    },
   },
 });
 
 export default postSlice;
-export const { updateId, add, remove, update, setPrevPage } = postSlice.actions;
+export const { updateId, add, remove, update } = postSlice.actions;
