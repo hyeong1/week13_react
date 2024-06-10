@@ -12,7 +12,9 @@ const Recommend = () => {
       <styled.RecommendBox>
         <styled.Title>이 문제 어때요?</styled.Title>
         <span>{random.title}</span>
-        <styled.LinkText>{random.link}</styled.LinkText>
+        <styled.LinkText onClick={() => window.open(random.link)}>
+          {random.link}
+        </styled.LinkText>
       </styled.RecommendBox>
     </>
   );
