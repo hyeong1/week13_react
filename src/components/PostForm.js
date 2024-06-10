@@ -5,7 +5,7 @@ import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import * as styled from "../styles/style";
 import { createDate } from "../utils/Format";
-import { updateId, add, update } from "../redux/modules/postSlice";
+import { updateId, add, update, setPrevPage } from "../redux/modules/postSlice";
 
 const PostForm = (props) => {
   const dispatch = useDispatch();
@@ -138,6 +138,7 @@ const PostForm = (props) => {
         write_at: detail.write_at,
       };
       dispatch(update(post));
+      dispatch(setPrevPage("/"));
       navigate(`/detail/${param.id}`);
     }
   };
