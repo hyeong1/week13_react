@@ -1,12 +1,12 @@
 import React from "react";
 import { FooterDiv, RowCenter } from "../styles/style";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
-  const param = useParams();
   const navigator = useNavigate();
-  const link = param.id !== undefined ? `/detail/${param.id}` : "/"; // 수정하다 돌아가는건 다시 detail로
+  const link = useSelector((state) => state.posts.prevPage); // 수정하다 돌아가는건 다시 detail로
   const handleBack = () => {
     navigator(link);
   };
