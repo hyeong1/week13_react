@@ -31,6 +31,9 @@ const PostForm = (props) => {
   }, []);
 
   const validData = () => {
+    const RegExp =
+      /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
     if (titleRef.current.value.length === 0) {
       alert("제목을 입력하세요.");
       titleRef.current.focus();
@@ -57,8 +60,21 @@ const PostForm = (props) => {
       alert("문제 링크를 첨부해주세요.");
       linkRef.current.focus();
       return false;
+    } else if (!RegExp.test(linkRef.current.value)) {
+      alert("URL 형식으로 입력해주세요.");
+      linkRef.current.focus();
+      return false;
+    } else if (
+      pwRef.current.value.length === 0 ||
+      pwRef.current.value.trim() === 0
+    ) {
+      alert("비밀번호를 입력하세요.");
+      pwRef.current.focus();
+      return false;
     }
-    return true;
+    if (window.confirm("비밀번호는 수정할 수 없습니다. 등록하시겠습니까?")) {
+      return true;
+    }
   };
 
   const handleSubmit = () => {
