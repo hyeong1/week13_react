@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import * as styled from "../styles/style";
 
 const Recommend = () => {
   const posts = useSelector((state) => state.posts.post);
-  const random = posts[Math.floor(Math.random() * posts.length)];
-  useEffect(() => {
-    console.log(random.title);
-  });
+  const filterPost = posts.filter((p) => p.score > 2);
+  const random = filterPost[Math.floor(Math.random() * filterPost.length)];
+
   return (
     <>
       <styled.RecommendBox>
