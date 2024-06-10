@@ -58,7 +58,6 @@ export const Tag = styled.span`
   padding: 5px;
 
   ${(props) => {
-    console.log(props.$category);
     if (props.$category === "baekjoon") {
       return css`
         background-color: #2980b9;
@@ -114,4 +113,11 @@ export const StButton = styled.button`
     background-color: gray;
     color: #f0f0f0;
   }
+`;
+
+export const RecommendBox = styled.div`
+  border-radius: 15px;
+  background-color: lightgrey;
+  padding: 5px 0 20px 10px;
+  margin-bottom: 15px;
 `;
