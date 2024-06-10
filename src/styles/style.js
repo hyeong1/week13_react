@@ -21,11 +21,15 @@ export const ContentInput = styled.textarea`
   width: 100%;
   height: 300px;
   max-lines: 10;
+  resize: none;
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
 `;
 
 export const ListElem = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 2fr);
+  grid-template-columns: 1fr 5fr 2fr 2fr;
   padding: 10px;
   border-bottom: 1px solid lightgray;
 
@@ -94,4 +98,20 @@ export const FooterDiv = styled.div`
 export const RowCenter = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const StButton = styled.button`
+  margin-left: 10px;
+  border: none;
+  border-radius: 10px;
+  height: 30px;
+  width: 60px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+
+  &:hover {
+    background-color: gray;
+    color: #f0f0f0;
+  }
 `;
