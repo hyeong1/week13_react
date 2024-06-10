@@ -1,21 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import * as styled from "../styles/style";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { createDate } from "../utils/Format";
-import { updateId, add, update, setPrevPage } from "../redux/modules/postSlice";
+import { updateId, add, update } from "../redux/modules/postSlice";
 
 const PostForm = (props) => {
-  console.log(props.data); // Edit에서 보낸 id가 있으면 redux에서 찾기 + 수정할 떄 redux에서도 수정 + 수정 api요청
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const posts = useSelector((state) => state.posts.post);
   const maxId = useSelector((state) => state.posts.id);
   const param = useParams();
   const detail = posts.find((p) => p.id == param.id);
-  console.log(detail);
 
   const titleRef = useRef("");
   const contentRef = useRef("");
@@ -72,7 +70,11 @@ const PostForm = (props) => {
       pwRef.current.focus();
       return false;
     }
-    if (window.confirm("비밀번호는 수정할 수 없습니다. 등록하시겠습니까?")) {
+    if (
+      window.confirm(
+        "카테고리와 비밀번호는 수정할 수 없습니다. 등록하시겠습니까?"
+      )
+    ) {
       return true;
     }
   };
@@ -112,9 +114,7 @@ const PostForm = (props) => {
         password: detail.password,
         write_at: detail.write_at,
       };
-      console.log(post);
       dispatch(update(post));
-      dispatch(setPrevPage("/"));
       navigate(`/detail/${param.id}`);
     }
   };

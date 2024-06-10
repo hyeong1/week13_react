@@ -1,24 +1,20 @@
 import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
+import { remove } from "../redux/modules/postSlice";
 import * as styled from "../styles/style";
 import Footer from "../components/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { setPrevPage } from "../redux/modules/postSlice";
-import { remove } from "../redux/modules/postSlice";
 
 const Detail = () => {
   const param = useParams();
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const pwRef = useRef();
-  const [userPw, setUserPw] = useState("");
-
-  // todo: postSlice에서 id 번호로 Detail/:id에 보여줘야 하는 객체 찾기
   const posts = useSelector((state) => state.posts.post);
   const detail = posts.find((p) => p.id == param.id);
-  console.log(detail);
+  const pwRef = useRef();
+  const [userPw, setUserPw] = useState("");
 
   const validUser = () => {
     if (userPw === "" || userPw.trim().length < 1) {
@@ -37,7 +33,6 @@ const Detail = () => {
     if (!validUser()) {
       return false;
     }
-    dispatch(setPrevPage(`/detail/${param.id}`));
     navigator(`/edit/${param.id}`);
   };
 
@@ -64,7 +59,7 @@ const Detail = () => {
             {detail.link}
           </styled.LinkText>
         </styled.Title>
-        <p>
+        <styled.Title>
           다시 보고 싶은 정도{" "}
           <Rating
             initialRating={detail.score}
@@ -72,12 +67,11 @@ const Detail = () => {
             emptySymbol={<FaRegStar />}
             fullSymbol={<FaStar />}
           />
-        </p>
-
+        </styled.Title>
         <styled.ContentInput readonly="readonly">
           {detail.content}
         </styled.ContentInput>
-        <p>
+        <styled.Title>
           비밀번호{" "}
           <input
             type="password"
@@ -87,7 +81,7 @@ const Detail = () => {
           />
           <styled.StButton onClick={handleEdit}>수정</styled.StButton>
           <styled.StButton onClick={handleDelete}>삭제</styled.StButton>
-        </p>
+        </styled.Title>
       </styled.Container>
       <Footer />
     </>

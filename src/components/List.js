@@ -1,14 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Rating from "react-rating";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import * as styled from "../styles/style";
-import { useNavigate } from "react-router-dom";
 
 const List = () => {
   const navigate = useNavigate();
   const posts = useSelector((state) => state.posts.post);
-  console.log(posts);
 
   return (
     <>
